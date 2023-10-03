@@ -188,7 +188,7 @@ def create_custom_token(uid, developer_claims=None, app=None, expires_in=None):
         TokenSignError: If an error occurs while signing the token using the remote IAM service.
     """
     client = _get_client(app)
-    return client.create_custom_token(uid, developer_claims, expires_in)
+    return client.create_custom_token(uid, developer_claims, expires_in=expires_in)
 
 
 def verify_id_token(id_token, app=None, check_revoked=False):

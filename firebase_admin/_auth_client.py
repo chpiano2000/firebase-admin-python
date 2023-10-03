@@ -74,7 +74,7 @@ class Client:
         """Tenant ID associated with this client."""
         return self._tenant_id
 
-    def create_custom_token(self, uid, developer_claims=None):
+    def create_custom_token(self, uid, developer_claims=None, expires_in=None):
         """Builds and signs a Firebase custom auth token.
 
         Args:
@@ -90,7 +90,7 @@ class Client:
             TokenSignError: If an error occurs while signing the token using the remote IAM service.
         """
         return self._token_generator.create_custom_token(
-            uid, developer_claims, tenant_id=self.tenant_id)
+            uid, developer_claims, tenant_id=self.tenant_id, exp=expires_in)
 
     def verify_id_token(self, id_token, check_revoked=False):
         """Verifies the signature and data for the provided JWT.
