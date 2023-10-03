@@ -171,7 +171,7 @@ def _get_client(app):
     return _utils.get_app_service(app, _AUTH_ATTRIBUTE, Client)
 
 
-def create_custom_token(uid, developer_claims=None, app=None):
+def create_custom_token(uid, developer_claims=None, app=None, expires_in=None):
     """Builds and signs a Firebase custom auth token.
 
     Args:
@@ -188,7 +188,7 @@ def create_custom_token(uid, developer_claims=None, app=None):
         TokenSignError: If an error occurs while signing the token using the remote IAM service.
     """
     client = _get_client(app)
-    return client.create_custom_token(uid, developer_claims)
+    return client.create_custom_token(uid, developer_claims, expires_in)
 
 
 def verify_id_token(id_token, app=None, check_revoked=False):

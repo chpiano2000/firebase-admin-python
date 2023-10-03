@@ -161,7 +161,7 @@ class TokenGenerator:
                     'details on creating custom tokens.'.format(error, url))
         return self._signing_provider
 
-    def create_custom_token(self, uid, developer_claims=None, tenant_id=None):
+    def create_custom_token(self, uid, developer_claims=None, tenant_id=None, exp=None):
         """Builds and signs a Firebase custom auth token."""
         if developer_claims is not None:
             if not isinstance(developer_claims, dict):
@@ -184,13 +184,14 @@ class TokenGenerator:
 
         signing_provider = self.signing_provider
         now = int(time.time())
+        expires_at = now + MAX_TOKEN_LIFETIME_SECONDS if exp is None else now + int(datetime.timedelta(seconds=exp).total_seconds())
         payload = {
             'iss': signing_provider.signer_email,
             'sub': signing_provider.signer_email,
             'aud': FIREBASE_AUDIENCE,
             'uid': uid,
             'iat': now,
-            'exp': now + MAX_TOKEN_LIFETIME_SECONDS,
+            'exp': expires_at,
         }
         if tenant_id:
             payload['tenant_id'] = tenant_id
